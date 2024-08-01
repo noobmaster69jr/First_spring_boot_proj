@@ -3,6 +3,7 @@ package com.example.restspring.first;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,8 +23,17 @@ public class TodoController {
   private static List<Todo> todoList;
   // Error message when the todo is not found
     private static final String TODO_NOT_FOUND = "Todo not found";
-  
-  public TodoController(){
+     
+    //@Autowired   - not recommended
+    // @Qualifier("fakeTodoService")
+    private TodoService todoService;
+
+    private TodoService todoService2;
+
+  public TodoController(@Qualifier("anotherTodoService") TodoService todoService,
+                    @Qualifier("fakeTodoService") TodoService todoService2){ 
+                        this.todoService = todoService;
+                        this.todoService2 = todoService2;
     todoList = new ArrayList<>();
      todoList.add(new Todo(1, false, "Todo 1", 1));
     todoList.add(new Todo(2, true, "Todo 2", 2));
